@@ -1,0 +1,58 @@
+import dotenv from "dotenv";
+dotenv.config();
+
+import cors from "cors";
+import express from "express";
+
+import { pool } from "./config/db.js";
+import { requireUser } from "./middlewares/requireUser.js";
+
+import authRoutes from "./routes/auth.routes.js";
+import mascotasRoutes from "./routes/mascotas.js";
+import perfilRoutes from "./routes/perfil.routes.js";
+import usuariosRoutes from "./routes/usuarios.routes.js";
+
+import agendaRoutes from "./routes/agenda.js";
+import citasRoutes from "./routes/citas.js";
+import historialRoutes from "./routes/historial.js";
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+// ✅ NO TOCAR
+app.get("/", (_req, res) => {
+  res.json({ mensaje: "API VetFarm funcionando correctamente" });
+});
+
+// 🔎 Health check (prueba de conexión a Supabase)
+app.get("/health", async (_req, res) => {
+  try {
+    const r = await pool.query("select now() as now");
+    res.json({ ok: true, dbTime: r.rows[0].now });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// 🧪 Diagnóstico de versión (para validar deploy)
+app.get("/version", (_req, res) => {
+  res.json({ version: "citas-agenda-1" });
+});
+
+app.use("/auth", authRoutes);
+app.use("/perfil", perfilRoutes);
+
+// ✅ PROTEGIDAS
+app.use("/mascotas", requireUser, mascotasRoutes);
+app.use("/agenda", requireUser, agendaRoutes);
+app.use("/citas", requireUser, citasRoutes);
+app.use("/historial", requireUser, historialRoutes);
+app.use("/usuarios", requireUser, usuariosRoutes);
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`API corriendo en puerto ${PORT}`);
+});
