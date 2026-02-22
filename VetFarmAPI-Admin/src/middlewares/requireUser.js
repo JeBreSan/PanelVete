@@ -18,3 +18,14 @@ export function requireUser(req, res, next) {
   req.user = { id, rol };
   next();
 }
+export function requireRole(roles = []) {
+  return function (req, res, next) {
+    const rol = req.user?.rol;
+    if (!rol) return res.status(401).json({ mensaje: "No autenticado." });
+
+    if (!roles.includes(rol)) {
+      return res.status(403).json({ mensaje: "Prohibido. Sin permisos." });
+    }
+    next();
+  };
+}

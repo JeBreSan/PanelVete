@@ -1,4 +1,4 @@
-﻿import dotenv from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 
 import cors from "cors";
@@ -22,12 +22,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// âœ… NO TOCAR
+// ✅ NO TOCAR
 app.get("/", (_req, res) => {
   res.json({ mensaje: "API VetFarm funcionando correctamente" });
 });
 
-// ðŸ”Ž Health check (prueba de conexiÃ³n a Supabase)
+// 🔎 Health check (prueba de conexión a Supabase)
 app.get("/health", async (_req, res) => {
   try {
     const r = await pool.query("select now() as now");
@@ -37,7 +37,7 @@ app.get("/health", async (_req, res) => {
   }
 });
 
-// ðŸ§ª DiagnÃ³stico de versiÃ³n (para validar deploy)
+// 🧪 Diagnóstico de versión (para validar deploy)
 app.get("/version", (_req, res) => {
   res.json({ version: "citas-agenda-1" });
 });
@@ -45,16 +45,15 @@ app.get("/version", (_req, res) => {
 app.use("/auth", authRoutes);
 app.use("/perfil", perfilRoutes);
 
-// âœ… PROTEGIDAS
+// ✅ PROTEGIDAS
 app.use("/mascotas", requireUser, mascotasRoutes);
 app.use("/agenda", requireUser, agendaRoutes);
 app.use("/citas", requireUser, citasRoutes);
 app.use("/historial", requireUser, historialRoutes);
 app.use("/usuarios", requireUser, usuariosRoutes);
-app.use("/admin", requireUser, adminCitasRoutes);
+app.use("/admin", adminCitasRoutes);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`API corriendo en puerto ${PORT}`);
 });
-

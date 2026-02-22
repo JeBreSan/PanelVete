@@ -180,3 +180,8 @@ export const eliminarUsuario = async (req, res) => {
     return res.status(500).json({ mensaje: "Error interno del servidor." });
   }
 };
+
+if (typeof activo !== "undefined") {
+  fields.push(`activo = $${idx++}`);
+  values.push(Boolean(activo));
+}
