@@ -1,87 +1,86 @@
 ﻿"use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { apiListarPropietarios, type Propietario } from "@/services/usuariosService";
+import { apiAdminListarPropietarios } from "@/services/citasAdminService";
 
-type Mini = { id: number; identificacion: string; nombre: string };
+export type PropMini = { id: number; identificacion: string; nombre: string };
 
 export function SelectorPropietario({
   valueId,
   onChange,
 }: {
   valueId: number | null;
-  onChange: (p: Mini | null) => void;
+  onChange: (p: PropMini | null) => void;
 }) {
-  const [loading, setLoading] = useState(true);
-  const [list, setList] = useState<Propietario[]>([]);
-  const [q, setQ] = useState("");
-
-  const filtered = useMemo(() => {
-    const s = q.trim().toLowerCase();
-    if (!s) return list;
-    return list.filter((p) =>
-      `${p.id} ${p.identificacion} ${p.nombre} ${p.correo ?? ""}`.toLowerCase().includes(s)
-    );
-  }, [list, q]);
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState<PropMini[]>([]);
 
   useEffect(() => {
-    (async () => {
+    let alive = true;
+
+    async function load() {
       try {
         setLoading(true);
-        const data = await apiListarPropietarios();
-        setList(data);
+        const list = await apiAdminListarPropietarios();
+        if (!alive) return;
+
+        setItems(list ?? []);
+
+        // si el valueId ya no existe, limpiamos
+        if (valueId && !(list ?? []).some((x) => Number(x.id) === Number(valueId))) {
+          onChange(null);
+        }
+      } catch {
+        if (!alive) return;
+        setItems([]);
+        onChange(null);
       } finally {
-        setLoading(false);
+        if (alive) setLoading(false);
       }
-    })();
+    }
+
+    load();
+    return () => { alive = false; };
   }, []);
 
-  const selectValue = String(valueId ?? ""); // ✅ controlado
+  const selectedValue = useMemo(() => (valueId ? String(valueId) : ""), [valueId]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const raw = e.target.value;
+    if (!raw) return onChange(null);
+
+    const id = Number(raw);
+    const found = items.find((x) => Number(x.id) === id) ?? null;
+    onChange(found);
+  };
 
   return (
     <div style={{ display: "grid", gap: 8 }}>
       <div style={{ fontWeight: 900 }}>Propietario</div>
 
-      <input
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        placeholder="Buscar propietario…"
-        style={{
-          padding: 10,
-          borderRadius: 10,
-          border: "1px solid rgba(255,255,255,0.18)",
-          background: "rgba(255,255,255,0.06)",
-          color: "#fff",
-          outline: "none",
-        }}
-      />
-
       <select
-        value={selectValue}
-        onChange={(e) => {
-          const id = Number(e.target.value || 0);
-          if (!id) return onChange(null);
-
-          const p = list.find((x) => Number(x.id) === id);
-          if (!p) return onChange(null);
-
-          onChange({ id: Number(p.id), identificacion: p.identificacion, nombre: p.nombre });
-        }}
+        value={selectedValue}
+        onChange={handleChange}
+        disabled={loading}
         style={{
-          padding: 10,
-          borderRadius: 10,
+          padding: 12,
+          borderRadius: 12,
           border: "1px solid rgba(255,255,255,0.18)",
-          background: "rgba(20,20,30,0.75)",
-          color: "#fff",
+          background: "rgba(0,0,0,0.25)",
+          color: "white",
           fontWeight: 800,
         }}
       >
-        <option value="" style={{ color: "#000" }}>
-          {loading ? "Cargando..." : "Seleccione propietario..."}
+        <option value="">
+          {loading
+            ? "Cargando propietarios..."
+            : items.length === 0
+            ? "No hay propietarios activos"
+            : "Seleccione propietario..."}
         </option>
 
-        {filtered.map((p) => (
-          <option key={p.id} value={String(p.id)} style={{ color: "#000" }}>
+        {items.map((p) => (
+          <option key={p.id} value={String(p.id)}>
             {p.nombre} — {p.identificacion}
           </option>
         ))}
@@ -89,3 +88,5 @@ export function SelectorPropietario({
     </div>
   );
 }
+
+export default SelectorPropietario;

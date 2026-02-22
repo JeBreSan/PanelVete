@@ -141,3 +141,13 @@ export async function apiAdminHistorialMascota(propietarioId: number, mascotaId:
 // ✅ Alias para compatibilidad con SelectorMascota
 export const apiAdminListarMascotasPropietario = apiAdminListarMascotasDePropietario;
 
+
+export async function apiAdminListarTodasProximasCitas(): Promise<CitaAdmin[]> {
+  const h = getAdminHeaders();
+  return request<CitaAdmin[]>(
+    `/admin/citas/proximas`,
+    { method: "GET" },
+    h
+  );
+}
+
