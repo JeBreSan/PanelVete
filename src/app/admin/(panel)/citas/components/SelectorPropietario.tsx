@@ -2,6 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 import { apiAdminListarPropietarios } from "@/services/citasAdminService";
+import { vf } from "@/ui/vfUi";
 
 export type PropMini = { id: number; identificacion: string; nombre: string };
 
@@ -26,7 +27,6 @@ export function SelectorPropietario({
 
         setItems(list ?? []);
 
-        // si el valueId ya no existe, limpiamos
         if (valueId && !(list ?? []).some((x) => Number(x.id) === Number(valueId))) {
           onChange(null);
         }
@@ -40,7 +40,10 @@ export function SelectorPropietario({
     }
 
     load();
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const selectedValue = useMemo(() => (valueId ? String(valueId) : ""), [valueId]);
@@ -53,40 +56,32 @@ export function SelectorPropietario({
     const found = items.find((x) => Number(x.id) === id) ?? null;
     onChange(found);
   };
+return (
+  <div className="vf-dark" style={{ display: "grid", gap: 8 }}>
+    <div style={{ fontWeight: 900 }}>Propietario</div>
 
-  return (
-    <div style={{ display: "grid", gap: 8 }}>
-      <div style={{ fontWeight: 900 }}>Propietario</div>
+    <select
+      className="vf-select"
+      value={selectedValue}
+      onChange={handleChange}
+      disabled={loading}
+    >
+      <option value="">
+        {loading
+          ? "Cargando propietarios..."
+          : items.length === 0
+          ? "No hay propietarios activos"
+          : "Seleccione propietario..."}
+      </option>
 
-      <select
-        value={selectedValue}
-        onChange={handleChange}
-        disabled={loading}
-        style={{
-          padding: 12,
-          borderRadius: 12,
-          border: "1px solid rgba(255,255,255,0.18)",
-          background: "rgba(0,0,0,0.25)",
-          color: "white",
-          fontWeight: 800,
-        }}
-      >
-        <option value="">
-          {loading
-            ? "Cargando propietarios..."
-            : items.length === 0
-            ? "No hay propietarios activos"
-            : "Seleccione propietario..."}
+      {items.map((p) => (
+        <option key={p.id} value={String(p.id)}>
+          {p.nombre} — {p.identificacion}
         </option>
-
-        {items.map((p) => (
-          <option key={p.id} value={String(p.id)}>
-            {p.nombre} — {p.identificacion}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
+      ))}
+    </select>
+  </div>
+);
 }
 
 export default SelectorPropietario;

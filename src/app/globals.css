@@ -19,172 +19,299 @@
   }
 }
 
+/* ✅ fuerza modo oscuro en controles nativos (select/dropdown) */
+html {
+  color-scheme: dark;
+}
+:root {
+  color-scheme: dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-:root{
-  --bg1:#6a4ff2;
-  --bg2:#2fd7c4;
-  --card:rgba(255,255,255,.14);
-  --card2:rgba(255,255,255,.10);
-  --border:rgba(255,255,255,.22);
-  --text:#ffffff;
-  --muted:rgba(255,255,255,.75);
-  --shadow:0 14px 40px rgba(0,0,0,.22);
-}
-
-html, body { height:100%; }
-body{
-  margin:0;
-  color:var(--text);
-  background: linear-gradient(120deg, var(--bg1), #5a64e7 45%, var(--bg2));
+  margin: 0;
+  color: #fff;
+  background: linear-gradient(120deg, #6a4ff2, #5a64e7 45%, #2fd7c4);
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
 }
 
-a{ color:inherit; text-decoration:none; }
+html,
+body {
+  height: 100%;
+}
 
-.vf-shell{
-  min-height:100vh;
-  display:grid;
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =========================
+   Layout / Shell
+========================= */
+
+:root {
+  --bg1: #6a4ff2;
+  --bg2: #2fd7c4;
+  --card: rgba(255, 255, 255, 0.14);
+  --card2: rgba(255, 255, 255, 0.10);
+  --border: rgba(255, 255, 255, 0.22);
+  --text: #ffffff;
+  --muted: rgba(255, 255, 255, 0.75);
+  --shadow: 0 14px 40px rgba(0, 0, 0, 0.22);
+}
+
+.vf-shell {
+  min-height: 100vh;
+  display: grid;
   grid-template-columns: 240px 1fr;
 }
 
-.vf-aside{
-  position:sticky;
-  top:0;
-  height:100vh;
-  padding:16px;
-  border-right: 1px solid rgba(255,255,255,.10);
-  background: rgba(0,0,0,.12);
+.vf-aside {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 16px;
+  border-right: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(10px);
 }
 
-.vf-brand{
-  font-weight:900;
-  font-size:22px;
-  letter-spacing:.3px;
+.vf-brand {
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 0.3px;
 }
-.vf-sub{
-  margin-top:6px;
-  font-size:12px;
-  color:var(--muted);
-}
-
-.vf-nav{
-  margin-top:14px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+.vf-sub {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--muted);
 }
 
-.vf-link{
-  padding:12px 12px;
-  border-radius:14px;
-  border:1px solid transparent;
-  background: rgba(255,255,255,.06);
-  transition: transform .12s ease, background .12s ease, border-color .12s ease;
-  font-weight:800;
-  cursor:pointer;
+.vf-nav {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-.vf-link:hover{
+
+.vf-link {
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.06);
+  transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+  font-weight: 800;
+  cursor: pointer;
+}
+.vf-link:hover {
   transform: translateY(-1px);
-  background: rgba(255,255,255,.12);
-  border-color: rgba(255,255,255,.18);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
 }
-.vf-link.active{
-  background: rgba(255,255,255,.18);
-  border-color: rgba(255,255,255,.26);
-}
-
-.vf-main{
-  padding:22px;
+.vf-link.active {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.26);
 }
 
-.vf-card{
-  background: rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.18);
+.vf-main {
+  padding: 22px;
+}
+
+.vf-card {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: var(--shadow);
-  border-radius:18px;
-  padding:18px;
+  border-radius: 18px;
+  padding: 18px;
   backdrop-filter: blur(12px);
 }
 
-.vf-btn{
-  padding:10px 14px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.22);
-  background: rgba(255,255,255,.10);
-  color: var(--text);
-  font-weight:900;
-  cursor:pointer;
-  transition: transform .12s ease, background .12s ease, border-color .12s ease;
-}
-.vf-btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.30); }
-.vf-btn:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
+/* =========================
+   UI Tokens
+========================= */
 
-.vf-btn-primary{
+:root {
+  --vf-bg1: rgba(255, 255, 255, 0.06);
+  --vf-bd1: rgba(255, 255, 255, 0.14);
+  --vf-bd2: rgba(255, 255, 255, 0.18);
+  --vf-text: rgba(255, 255, 255, 0.92);
+  --vf-primary1: #7c5cff; /* morado */
+  --vf-primary2: #2dd4bf; /* verde/teal */
+  --vf-danger1: #ff4d6d;
+  --vf-danger2: #ff7a59;
+}
+
+/* Botón base */
+.vf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid var(--vf-bd2);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--vf-text);
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+  user-select: none;
+}
+
+.vf-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+.vf-btn:active {
+  transform: translateY(0px) scale(0.99);
+}
+.vf-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Primary gradient */
+.vf-btn-primary {
   border: none;
-  background: linear-gradient(90deg, rgba(140,120,255,.95), rgba(47,215,196,.95));
-}
-.vf-btn-primary:hover{ filter: brightness(1.05); }
-
-.vf-btn-danger{
-  border:none;
-  background: linear-gradient(90deg, rgba(255,66,120,.95), rgba(255,122,66,.95));
+  background: linear-gradient(90deg, var(--vf-primary1), var(--vf-primary2));
+  color: #0b1020;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
 }
 
-.vf-input{
-  width:100%;
-  padding:12px 12px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.18);
-  background: rgba(255,255,255,.10);
-  color: var(--text);
-  outline:none;
+/* Secundario */
+.vf-btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
 }
-.vf-input::placeholder{ color: rgba(255,255,255,.55); }
-.vf-input:focus{ border-color: rgba(255,255,255,.32); background: rgba(255,255,255,.14); }
 
-.vf-table{
-  width:100%;
+/* Peligro */
+.vf-btn-danger {
+  border: none;
+  background: linear-gradient(90deg, var(--vf-danger1), var(--vf-danger2));
+  color: #1b0b10;
+}
+
+/* Inputs / Textarea (select va aparte) */
+.vf-input,
+.vf-textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--vf-bd2);
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--vf-text);
+  font-weight: 800;
+  outline: none;
+}
+.vf-input::placeholder {
+  color: rgba(255, 255, 255, 0.55);
+}
+.vf-input:focus,
+.vf-textarea:focus {
+  border-color: rgba(164, 107, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(164, 107, 255, 0.18);
+}
+.vf-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.vf-dark {
+  color-scheme: dark;
+}
+
+/* =========================
+   Tables
+========================= */
+.vf-table {
+  width: 100%;
   border-collapse: collapse;
-  overflow:hidden;
+  overflow: hidden;
   border-radius: 16px;
 }
-.vf-table th, .vf-table td{
-  padding:10px 10px;
-  border-bottom:1px solid rgba(255,255,255,.10);
+.vf-table th,
+.vf-table td {
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
 }
-.vf-table thead th{
-  font-size:12px;
+.vf-table thead th {
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing:.6px;
-  color: rgba(255,255,255,.86);
-  background: rgba(0,0,0,.12);
+  letter-spacing: 0.6px;
+  color: rgba(255, 255, 255, 0.86);
+  background: rgba(0, 0, 0, 0.12);
 }
-.vf-table tbody tr:hover{
-  background: rgba(255,255,255,.06);
+.vf-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
 
-.vf-modalOverlay{
-  position:fixed;
-  inset:0;
-  background: rgba(0,0,0,.45);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:16px;
+/* =========================
+   Modals
+========================= */
+.vf-modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
 }
-.vf-modal{
-  width:min(820px, 100%);
-  background: rgba(255,255,255,.13);
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:18px;
+
+.vf-modal {
+  width: min(820px, 100%);
+  background: rgba(255, 255, 255, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(14px);
-  padding:18px;
+  padding: 18px;
   color: var(--text);
+}
+
+/* =========================
+   ✅ VetFarm Admin - Selectores
+========================= */
+
+.vf-select {
+  width: 100%;
+  padding: 12px 42px 12px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  font-weight: 800;
+  outline: none;
+
+  /* ✅ CLAVE: fuerza modo oscuro en controles nativos */
+  color-scheme: dark;
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-image: linear-gradient(45deg, transparent 50%, rgba(255, 255, 255, 0.75) 50%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.75) 50%, transparent 50%);
+  background-position: calc(100% - 22px) calc(50% - 2px), calc(100% - 16px) calc(50% - 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+.vf-select:focus {
+  border-color: rgba(164, 107, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(164, 107, 255, 0.18);
+}
+
+.vf-select:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* ✅ intenta oscurecer el menú desplegable (si el browser lo permite) */
+.vf-select option {
+  background: #0b1020;
+  color: #fff;
 }

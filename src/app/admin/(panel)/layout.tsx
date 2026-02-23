@@ -14,7 +14,6 @@ export default function AdminPanelLayout({ children }: { children: React.ReactNo
         background: "linear-gradient(135deg,#5b4ae6,#2aa7c9)",
       }}
     >
-      {/* Sidebar */}
       <aside
         style={{
           width: 220,
@@ -34,24 +33,23 @@ export default function AdminPanelLayout({ children }: { children: React.ReactNo
           <Link style={linkStyle} href="/admin/mascotas">Mascotas</Link>
           <Link style={linkStyle} href="/admin/citas">Citas</Link>
           <Link style={linkStyle} href="/admin/historial">Historial</Link>
+
+          {/* ✅ Logout más arriba (debajo del menú) */}
+          <Link
+            href="/admin/logout"
+            style={{
+              ...linkStyle,
+              marginTop: 10,
+              background: "linear-gradient(90deg,#ff3b3b,#ff7a3b)",
+              border: "none",
+              textAlign: "center",
+            }}
+          >
+            Cerrar sesión
+          </Link>
         </nav>
-
-        <div style={{ flex: 1 }} />
-
-        <Link
-          href="/admin/logout"
-          style={{
-            ...linkStyle,
-            background: "linear-gradient(90deg,#ff3b3b,#ff7a3b)",
-            border: "none",
-            textAlign: "center",
-          }}
-        >
-          Cerrar sesión
-        </Link>
       </aside>
 
-      {/* Content */}
       <main style={{ flex: 1, padding: 18 }}>
         <div
           style={{

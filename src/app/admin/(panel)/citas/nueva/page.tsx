@@ -158,11 +158,11 @@ export default function NuevaCitaPage() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
           <h1 style={{ fontSize: 22, fontWeight: 900 }}>Agendar cita</h1>
-          <div style={{ opacity: 0.85 }}>Por capas: propietario → mascota → fecha → hora</div>
+          
         </div>
-        <button onClick={() => router.back()} style={{ padding: "10px 14px", borderRadius: 10 }}>
-          Volver
-        </button>
+        <button className="vf-btn vf-btn-ghost" onClick={() => router.push("/admin/citas")}>
+  Volver
+</button>
       </div>
 
       {msg ? (
@@ -252,14 +252,15 @@ export default function NuevaCitaPage() {
           />
         </div>
 
-        <div style={{ display: "flex", gap: 10 }}>
-          <button onClick={crear} style={{ padding: "10px 14px", borderRadius: 10, fontWeight: 900 }}>
-            Confirmar cita
-          </button>
-          <button onClick={() => router.push("/admin/citas")} style={{ padding: "10px 14px", borderRadius: 10 }}>
-            Ir a próximas
-          </button>
-        </div>
+        <div style={{ display: "flex", gap: 10, marginTop: 14, flexWrap: "wrap" }}>
+  <button className="vf-btn vf-btn-primary" onClick={crear}>
+    Confirmar cita
+  </button>
+
+  <button className="vf-btn vf-btn-ghost" onClick={() => router.push("/admin/citas")}>
+    Ir a próximas
+  </button>
+</div>
       </div>
     </div>
   );
