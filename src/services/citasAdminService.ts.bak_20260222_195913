@@ -35,7 +35,7 @@ export async function apiAdminListarPropietarios() {
 
 export async function apiAdminListarMascotasDePropietario(propietarioId: number) {
   const h = getAdminHeaders();
-  return request<Array<{ id: number; nombre: string; especie: string; raza?: string; edad?: any }>>(
+  return request<Array<{ id: number; nombre: string; especie: string }>>(
     `/admin/propietarios/${propietarioId}/mascotas`,
     { method: "GET" },
     h
@@ -138,8 +138,9 @@ export async function apiAdminHistorialMascota(propietarioId: number, mascotaId:
     h
   );
 }
-
+// ✅ Alias para compatibilidad con SelectorMascota
 export const apiAdminListarMascotasPropietario = apiAdminListarMascotasDePropietario;
+
 
 export async function apiAdminListarTodasProximasCitas(): Promise<CitaAdmin[]> {
   const h = getAdminHeaders();
@@ -150,82 +151,3 @@ export async function apiAdminListarTodasProximasCitas(): Promise<CitaAdmin[]> {
   );
 }
 
-/* ===========================
-   ✅ NUEVO: Mascotas Panel
-=========================== */
-
-export type MascotaAdminListItem = {
-  id: number;
-  nombre: string;
-  especie: string | null;
-  raza: string | null;
-  activo: boolean;
-  propietario_nombre: string | null;
-};
-
-export type MascotaAdminFicha = {
-  id: number;
-  propietario_id: number;
-  nombre: string;
-  especie: string | null;
-  raza: string | null;
-  edad: any;
-  activo: boolean;
-  created_at?: string;
-  updated_at?: string;
-  propietario_nombre?: string | null;
-  propietario_identificacion?: string | null;
-};
-
-export async function apiAdminListarMascotas(): Promise<MascotaAdminListItem[]> {
-  const h = getAdminHeaders();
-  return request<MascotaAdminListItem[]>(
-    `/admin/mascotas`,
-    { method: "GET" },
-    h
-  );
-}
-
-export async function apiAdminMascotaFicha(id: number): Promise<MascotaAdminFicha> {
-  const h = getAdminHeaders();
-  return request<MascotaAdminFicha>(
-    `/admin/mascotas/${id}`,
-    { method: "GET" },
-    h
-  );
-}
-
-export type MascotaAdminPatch = Partial<Pick<MascotaAdminFicha, "nombre" | "especie" | "raza" | "edad" | "activo">>;
-
-export async function apiAdminActualizarMascota(id: number, patch: MascotaAdminPatch): Promise<MascotaAdminFicha> {
-  const h = getAdminHeaders();
-  return request<MascotaAdminFicha>(
-    `/admin/mascotas/${id}`,
-    { method: "PUT", body: JSON.stringify(patch) },
-    h
-  );
-}
-
-/* ===========================
-   ✅ NUEVO: Historial Panel
-=========================== */
-
-export type HistorialItem = {
-  id: number;
-  propietario_id: number;
-  mascota_id: number;
-  tipo: string;
-  fecha: string;
-  titulo: string;
-  detalle: string | null;
-  mascota_nombre?: string | null;
-};
-
-export async function apiAdminHistorialPropietario(propietarioId: number): Promise<HistorialItem[]> {
-  const h = getAdminHeaders();
-  return request<HistorialItem[]>(
-    `/admin/propietarios/${propietarioId}/historial`,
-    { method: "GET" },
-    h
-  );
-}
